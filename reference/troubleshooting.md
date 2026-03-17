@@ -1,77 +1,116 @@
-# MyFavoriteAlbums FAQ
-
-## How do I launch the app?
-
-1. Open the MyFavoriteAlbums project in RStudio (**File - Open Project**).
-2. In the **Files** pane, click **app.R** to open it.
-3. Click **Run App** at the top.
-
-Then, now, A browser window opens showing the MyFavoriteAlbums interface.  
-For a full walkthrough, see [Getting Started with My Favorite Albums](../tasks/run-the-app.md).
-
+# MyFavoriteAlbums Troubleshooting Guide
+This guide helps you diagnose and fix common problems when running the MyFavoriteAlbums Shiny app.  
+For setup instructions, see [Getting Started with My Favorite Albums](../tasks/run-the-app.md).
 ---
-## Where does the data come from?
-The app reads from `data/album-rankings.csv` in the project folder. The dataset contains  following columns:
+## App Will Not Launch
+**Problem:** Clicking **Run App** does nothing or produces an error in the Console.
 
-**Example rows:**
-| Column  | Type    | Description                                         |
-|---------|---------|-----------------------------------------------------|
-| Year    | integer | The year the ranking was published                  |
-| Ranking | integer | The album's position in that year's list (1 = best) |
-| Album   | string  | The album title                                     |
-| Artist  | string  | The artist or band name                             |
-| Rating  | integer | A personal rating score for the album               |
-| Vinyl   | string  | Contains "v" if the owner has this album on vinyl   |
-| EP      | string  | Contains "EP" if the release is an extended play    |
-| Live    | string  | Contains "Live" if the release is a live recording  |
-**Example rows:**
-
-| Year | Ranking | Album                       | Artist              | Rating | Vinyl | EP | Live |
-|------|---------|-----------------------------|---------------------|--------|-------|----|------|
-| 1993 | 1       | August and Everything After | Counting Crows      | 10     | v     |    |      |
-| 1994 | 3       | Unplugged in New York       | Nirvana             | 10     | v     |    | Live |
-| 1997 | 3       | Dog on Wheels               | Belle and Sebastian | 10     | v     | EP |      |
-
----
-## Why isn't the app loading?
-Check the following, in order:
-
-1. **Are all required packages installed?** Run this in the Console:
+**Possible causes:**
+- Required packages are not installed.
+- The project folder is missing files.
+- RStudio is not pointed at the correct working directory.
+**Solution:**
+1. Install all required packages:
 ```r
    install.packages(c("shiny", "dplyr", "tidyverse", "ggplot2"))
 ```
-2. **Is the CSV file in the right place?** Confirm that `album-rankings.csv` is inside the `data/` folder:
+
+2. Confirm your working directory is the MyFavoriteAlbums project folder:
+```r
+   getwd()
 ```
-   MyFavoriteAlbums/
-   └── data/
-       └── album-rankings.csv
+   The output should end with `.../MyFavoriteAlbums`. If it does not, go to **Session - Set Working Directory - Project Directory**.
+
+3. Confirm that all required files are present in the project folder. Open the **Files** pane in RStudio and check for:
+   - `app.R`
+   - `app_ui.R`
+   - `app_server.R`
+   - `albums_by_year.R`
+   - `compare_bands.R`
+   - `number_one_albums.R`
+   - `fav_bands.R`
+   - `data/album-rankings.csv`
+
+4. If errors still exist, restart RStudio: **Session > Restart R**, then click **Run App** again.
+---
+
+## Error: `object 'album_data' not found`
+
+**Problem:** The Console displays:
 ```
-3. **Are there errors in the Console?** Look for red error text and address each one before trying again.
+Error: object 'album_data' not found
+```
 
----
-## Why don't I see albums for the year I selected?
+**Cause:** The dataset was not loaded before a function tried to use it.
 
-Possible causes:
-
-- The year you selected does not exist in the dataset. Run `unique(album_data$Year)` in the Console to see which years are available.
-- The dataset did not load correctly. Confirm `album_data` is in your environment.
-- The `Year` column contains text instead of numbers, which prevents matching. Open `album-rankings.csv` and confirm the Year column contains only four-digit integers with no quotes.
-
----
-
-## What does the Number One Albums tab show?
-
-The **Number One Albums** tab displays every album that achieved a ranking of 1 in the dataset, across all available years. Select a year from the dropdown and click **Submit** to filter the results.
+**Solution:** Load the dataset first, then run your function:
+```r
+album_data <- read.csv("data/album-rankings.csv")
+```
 
 ---
 
-## Can I add my own album rankings?
+## Error: `cannot open file 'data/album-rankings.csv'`
 
-Yes. To add rankings to the dataset:
+**Problem:** The Console displays:
+```
+Error: cannot open file 'data/album-rankings.csv': No such file or directory
+```
 
-1. Open `data/album-rankings.csv` in a spreadsheet/text file.
-2. Add new rows using the existing column order: `Year`, `Ranking`, `Album`, `Artist`, `Rating`, `Vinyl`, `EP`, `Live`.
-3. Save the file.
-4. Stop the Shiny app and click **Run App** again to reload the data.
+**Cause:** The CSV file is missing, named incorrectly, or not inside the `data/` folder.
 
-> **Note:** The app loads data only when it starts, so you must restart it to see any changes to the CSV.
+**Solution:** Confirm that your project folder matches this structure exactly:
+```
+MyFavoriteAlbums/
+└── data/
+    └── album-rankings.csv
+```
+If the file is in the wrong place, move it into the `data/` folder, then click **Run App** again.
+
+---
+
+## No Albums Appear for Selected Year
+
+**Problem:** The app shows an empty table after selecting a year and clicking **Submit**.
+
+**Possible causes:**
+- The selected year does not exist in the dataset
+- The `Year` column contains text instead of numbers
+- The dataset is not loading
+
+**Solution:** Run the following in the Console to see which years are available:
+```r
+unique(album_data$Year)
+```
+If the year you selected is not in the output, choose a year from the list that is returned. If the command itself errors, reload the dataset first:
+```r
+album_data <- read.csv("data/album-rankings.csv")
+```
+---
+
+## App Window Opens but Shows No Content
+
+**Problem:** The Shiny window opens but the tabs are empty.
+
+**Possible causes:**
+- Errors in R scripts that prevent the server from rendering output
+- A required file is missing from the project folder
+
+**Solution:**
+
+1. Check the **Console** for red error text and address each error shown.
+2. Confirm all required files are present (see the file list in [App Will Not Launch](#app-will-not-launch) above).
+3. Restart RStudio and click **Run App** again.
+
+---
+
+## Changes to CSV Do Not Appear in App
+
+**Problem:** After editing `album-rankings.csv`, the app still shows the old data.
+
+**Cause:** Shiny loads data only when the app starts, not while it is already running.
+
+**Solution:**
+1. Stop the app by clicking the **Stop** button in the Console toolbar.
+2. Save your CSV file.
+3. Click **Run App** again.
