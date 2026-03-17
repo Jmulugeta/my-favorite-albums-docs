@@ -24,7 +24,6 @@ The app reads from `data/album-rankings.csv` in the project folder. The dataset 
 | Vinyl   | string  | Contains "v" if the owner has this album on vinyl   |
 | EP      | string  | Contains "EP" if the release is an extended play    |
 | Live    | string  | Contains "Live" if the release is a live recording  |
-|--------------------------------------------------------------------------|
 **Example rows:**
 
 | Year | Ranking | Album                       | Artist              | Rating | Vinyl | EP | Live |
@@ -32,7 +31,7 @@ The app reads from `data/album-rankings.csv` in the project folder. The dataset 
 | 1993 | 1       | August and Everything After | Counting Crows      | 10     | v     |    |      |
 | 1994 | 3       | Unplugged in New York       | Nirvana             | 10     | v     |    | Live |
 | 1997 | 3       | Dog on Wheels               | Belle and Sebastian | 10     | v     | EP |      |
----------------------------------------------------------------------------------------------------
+
 ---
 ## Why isn't the app loading?
 Check the following, in order:
