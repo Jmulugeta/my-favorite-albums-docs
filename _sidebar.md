@@ -1,12 +1,12 @@
 * [Home](/)
 
 * **For Music Fans & New Users**
-* [What is My Favorite Albums?](docs/concepts/conceptual-overview.md)
-* [Getting Started with the App](docs/tasks/run-the-app.md)
+* [What is My Favorite Albums?](conceptual-overview.md)
+* [Getting Started with the App](tasks/run-the-app.md)
 
 * **For Developers**
-* [Analyzing Data with R Scripts](docs/tasks/explore-album-data.md)
+* [Analyzing Data with R Scripts](tasks/explore-album-data.md)
 
 * **Reference**
-* [FAQ](docs/reference/faq.md)
-* [Troubleshooting Guide](docs/reference/troubleshooting.md)
+* [FAQ](reference/faq.md)
+* [Troubleshooting Guide](reference/troubleshooting.md)
