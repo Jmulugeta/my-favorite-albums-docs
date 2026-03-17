@@ -1,10 +1,14 @@
 # My Favorite Albums Documentation
 
-Welcome to the documentation for **My Favorite Albums**, an R-based data analysis tool that analyzes yearly music album rankings.
+Welcome to the documentation for **My Favorite Albums**, an R-based Shiny app that analyzes yearly music album rankings.
 
-This documentation is designed for two audiences:
+## For Music Fans and New R Users
+- [What is My Favorite Albums?](conceptual-overview.md)
+- [Getting Started with the App](tasks/run-the-app.md)
 
-- Music Lovers and Users who want to explore music data using the Shiny interface
-- Developers who want to work with the R functions
+## For Developers
+- [Analyzing Data with R Scripts](tasks/explore-album-data.md)
 
-Use the sidebar to navigate the documentation.
+## Reference
+- [FAQ](reference/faq.md)
+- [Troubleshooting Guide](reference/troubleshooting.md)
